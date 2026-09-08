@@ -1,55 +1,55 @@
 <?php
-  // Page Configuration
-  $pageTitle = "Taan Tech - Home";
-  
-  // Optional dynamic content array for Services
-  $services = [
-      [
-          "title" => "PC Building Service",
-          "description" => "Have one of our staff build your PC with custom parts.",
-          "image" => "Images/services/PCbuild.jpg"
-      ],
-      [
-          "title" => "Device Repair Service",
-          "description" => "Replacement and Repair",
-          "image" => "Images/services/Repair.png"
-      ],
-      [
-          "title" => "BIOS & Device Maintenance",
-          "description" => "Updating BIOS, Drivers and checking for Malware.",
-          "image" => "Images/services/bios.jpg"
-      ]
-  ];
+// Page Configuration
+$pageTitle = "Taan Tech - Home";
 
-  // Optional dynamic content array for Testimonials
-  $testimonials = [
-      [
-          "stars" => "★★★★",
-          "text" => "Great service every time! The staff is friendly, and always explain what they are doing. Trustworthy and reliable.",
-          "author" => "John Smith",
-          "location" => "Washington, D.C."
-      ],
-      [
-          "stars" => "★★★★★",
-          "text" => "Saved me a lot of trouble. They diagnosed an hardware issue that another shop couldn't fix. Excellent technical knowledge.",
-          "author" => "Emily Johansson",
-          "location" => "San Francisco, California"
-      ],
-      [
-          "stars" => "★★★★★",
-          "text" => "Taan Tech is my go-to place for maintenance. They always use quality parts and my laptop runs like a dream.",
-          "author" => "Bonnie Red",
-          "location" => "Los Angeles, California"
-      ],
-      [
-          "stars" => "★★★★★",
-          "text" => "Ordering parts through their website was seamless, and the delivery was quick. The parts were well-packaged and exactly what I needed.",
-          "author" => "John Red",
-          "location" => "Washington, D.C."
-      ]
-  ];
+// Optional dynamic content array for Services
+$services = [
+    [
+        "title" => "PC Building Service",
+        "description" => "Have one of our staff build your PC with custom parts.",
+        "image" => "Images/services/PCbuild.jpg"
+    ],
+    [
+        "title" => "Device Repair Service",
+        "description" => "Replacement and Repair",
+        "image" => "Images/services/Repair.png"
+    ],
+    [
+        "title" => "BIOS & Device Maintenance",
+        "description" => "Updating BIOS, Drivers and checking for Malware.",
+        "image" => "Images/services/bios.jpg"
+    ]
+];
 
-  include 'header.php';
+// Optional dynamic content array for Testimonials
+$testimonials = [
+    [
+        "stars" => "★★★★",
+        "text" => "Great service every time! The staff is friendly, and always explain what they are doing. Trustworthy and reliable.",
+        "author" => "John Smith",
+        "location" => "Washington, D.C."
+    ],
+    [
+        "stars" => "★★★★★",
+        "text" => "Saved me a lot of trouble. They diagnosed an hardware issue that another shop couldn't fix. Excellent technical knowledge.",
+        "author" => "Emily Johansson",
+        "location" => "San Francisco, California"
+    ],
+    [
+        "stars" => "★★★★★",
+        "text" => "Taan Tech is my go-to place for maintenance. They always use quality parts and my laptop runs like a dream.",
+        "author" => "Bonnie Red",
+        "location" => "Los Angeles, California"
+    ],
+    [
+        "stars" => "★★★★★",
+        "text" => "Ordering parts through their website was seamless, and the delivery was quick. The parts were well-packaged and exactly what I needed.",
+        "author" => "John Red",
+        "location" => "Washington, D.C."
+    ]
+];
+
+include 'header.php';
 ?>
 
   <!-- Hero Section -->

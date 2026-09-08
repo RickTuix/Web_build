@@ -1,7 +1,20 @@
 <?php
-// Ensure session is started
+// Start session with secure cookie settings FIRST (if not already started)
 if (session_status() === PHP_SESSION_NONE) {
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'domain' => '',
+        'secure' => isset($_SERVER['HTTPS']),
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
     session_start();
+}
+
+// CSRF token generation (if not already set)
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 ?>
 
@@ -34,7 +47,7 @@ if (session_status() === PHP_SESSION_NONE) {
             <!-- Logged in: show Logout -->
             <a href="logout.php" class="btn btn-secondary">Logout</a>
           <?php else: ?>
-            <!-- Not logged in: show Sign In and Sign Up -->
+            <!-- Not logged in: show Sign In and Sign Up links -->
             <a href="login.php" class="btn btn-secondary">Sign In</a>
             <a href="register.php" class="btn btn-primary">Sign Up</a>
           <?php endif; ?>
