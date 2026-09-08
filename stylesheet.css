@@ -1,0 +1,366 @@
+/* Global Reset & Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: #2B3C49;
+  color: #333;
+  line-height: 1.5;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Helper Utility Classes */
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  border: none;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+/* Hover effects – same color as border for secondary, darker shade for primary/dark */
+.btn-primary {
+  background-color: #1a73e8;
+  color: #ffffff;
+  border: 1px solid #1a73e8; /* added border for consistency */
+}
+
+.btn-primary:hover {
+  background-color: #1557b0; /* darker blue */
+  border-color: #1557b0;
+}
+
+.btn-secondary {
+  background-color: #ffffff;
+  color: #1a73e8;
+  border: 1px solid #1a73e8;
+}
+
+.btn-secondary:hover {
+  background-color: #1a73e8; /* same as border color */
+  color: #ffffff;
+}
+
+.btn-dark {
+  background-color: #1a73e8;
+  color: #ffffff;
+  border: 1px solid #1a73e8;
+}
+
+.btn-dark:hover {
+  background-color: #1557b0;
+  border-color: #1557b0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section-title {
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Navbar Header */
+header {
+  background-color: #2B3C49;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between; /* logo left, nav-right right */
+  align-items: center;
+  height: 70px;
+}
+
+.logo {
+  color: blue;
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: 1px;
+}
+
+/* Right grouping: nav links + header actions */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-links {
+  color: white;
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  color: #1a73e8;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Hero Banner */
+.hero {
+  background-image: url('Images/Banners/pc2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-color: #eef2f6;
+  padding: 4rem 0;
+  margin-bottom: 3rem;
+}
+
+.hero-content {
+  max-width: 550px;
+}
+
+.hero-title {
+  color: white;
+  font-size: 2.5rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Grid System for Featured Items */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.card {
+  background-color: #1B2A4A;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-title {
+  color: white;
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-text {
+  color: white;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-icon {
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+/* Promo Section */
+.promo-banner {
+  background-image:linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('Images/Banners/collection.jpg');
+  background-size: cover;
+  background-position: center;
+  background-color: #0d1b2a;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 2.5rem;
+  margin-bottom: 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.promo-content h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.promo-content ul {
+  list-style: none;
+  margin-top: 0.5rem;
+}
+
+.promo-content li {
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+
+.promo-btn-secondary {
+  margin-left: 0.5rem;
+}
+
+/* Products Highlight */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.product-box {
+  border: 2px solid #3aafa9;
+  border-radius: 12px;
+  padding: 1rem;
+  background-color: #2B3C49;
+}
+
+.product-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover; /* changed from contain to crop appropriately */
+  border-radius: 6px;
+  display: block;
+}
+
+/* Call to Action Banner */
+.cta-banner {
+  background-image:linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('Images/Banners/pc3.avif');
+  background-size: contain; 
+  background-color: #e9ecef;
+  padding: 3rem;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.cta-banner h2 {
+  color: white;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.cta-banner p {
+  color: white;
+  margin-bottom: 1.5rem;
+}
+
+.cta-btn-secondary {
+  margin-left: 0.5rem;
+}
+
+/* Testimonials Section */
+.testimonials {
+  margin-bottom: 3.5rem;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.testimonial-card {
+  background: #ffffff;
+  padding: 1.25rem;
+  border-radius: 6px;
+  border: 1px solid #eee;
+}
+
+.stars {
+  color: #f39c12;
+  margin-bottom: 0.5rem;
+}
+
+.testimonial-text {
+  font-size: 0.88rem;
+  color: #444;
+  margin-bottom: 1rem;
+}
+
+.author-name {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.author-location {
+  font-size: 0.75rem;
+  color: #777;
+}
+
+/* Footer */
+footer {
+  background-color: #111;
+  color: #ccc;
+  padding: 3rem 0 1.5rem 0;
+  font-size: 0.85rem;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.footer-col h4 {
+  color: #fff;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.footer-col ul {
+  list-style: none;
+}
+
+.footer-col li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-col a:hover {
+  color: #fff;
+}
+
+.footer-about-text {
+  color: #888;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.footer-bottom {
+  border-top: 1px solid #222;
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  color: #777;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1rem;
+}
