@@ -59,7 +59,6 @@ include 'header.php';
         <h1 class="hero-title">Trusted and reliable source of gadgets and tech accessories</h1>
         <div class="hero-actions">
           <a href="#" class="btn btn-primary">Shop Now</a>
-          <a href="#" class="btn btn-secondary">Browse Services</a>
         </div>
       </div>
     </div>
@@ -100,16 +99,19 @@ include 'header.php';
       </div>
     </div>
 
-    <!-- Most Popular Products -->
-    <h2 class="section-title">Most Popular Products</h2>
-      <div class="products-grid">
-        <div class="product-box">
-       <img src="Images/Products/product1.jpg" alt="Sleek white headset and earpods set" class="product-img">
-      </div>
-        <div class="product-box">
-      <img src="Images/Products/product2.jpg" alt="WH-1000XM5 Industry Leading Noise-Cancelling Headphones" class="product-img">
-      </div>
+<!-- Most Popular Product -->
+<h2 class="section-title">Most Popular Product</h2>
+
+<div class="popular-product-wrapper">
+    <div class="popular-product-box">
+        <img src="Images/Products/product1.jpg" alt="Sleek white headset and earpods set" class="popular-product-img">
     </div>
+
+    <div class="popular-product-info">
+        <h3>Sleek white headset + earpods set</h3>
+        <p class="product-subtitle">WH-1000XM5 Industry Leading Noise-Cancelling Headphones</p>
+    </div>
+</div>
 
     <!-- CTA Section -->
     <div class="cta-banner">

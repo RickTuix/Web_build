@@ -1,4 +1,10 @@
 <?php
+// Include helper functions
+require_once __DIR__ . '/functions.php';
+
+// Start session (if not already started)
+ensure_session();
+
 // Database configuration
 $host = 'localhost';
 $db   = 'taantech_db';
@@ -16,10 +22,10 @@ $options = [
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (\PDOException $e) {
-    error_log($e->getMessage()); // log error
-    die("Database connection failed.");
+    error_log($e->getMessage());
+    die("Database connection failed: " . $e->getMessage());
 }
 
-// Return the PDO instance (optional, but good practice)
+// Return the PDO instance
 return $pdo;
 ?>

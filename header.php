@@ -24,7 +24,8 @@ if (empty($_SESSION['csrf_token'])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo isset($pageTitle) ? htmlspecialchars($pageTitle) : "Taan Tech"; ?></title>
-  <link rel="stylesheet" href="stylesheet.css">
+  <link rel="stylesheet" href="/WEBBUILD/stylesheet.css">
+  <script src="/WEBBUILD/validation.js"></script>
 </head>
 <body>
 
@@ -37,9 +38,15 @@ if (empty($_SESSION['csrf_token'])) {
       <div class="nav-right">
         <ul class="nav-links">
           <li><a href="index.php">Home</a></li>
-          <li><a href="#">Shop</a></li>
+          <li><a href="products.php">Shop</a></li>
           <li><a href="#">Guides</a></li>
           <li><a href="#">About Us</a></li>
+          <?php if (isset($_SESSION['user_id'])): ?>
+            <li><a href="account.php">My Account</a></li>
+                <?php if ($_SESSION['role'] === 'admin'): ?>
+            <li><a href="admin/index.php">Admin</a></li>
+          <?php endif; ?>
+         <?php endif; ?>
         </ul>
         
         <div class="header-actions">

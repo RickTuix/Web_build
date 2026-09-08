@@ -71,7 +71,7 @@ include 'header.php';
         <?php if ($error): ?>
             <p class="error-message"><?php echo htmlspecialchars($error); ?></p>
         <?php endif; ?>
-        <form method="POST" class="auth-form">
+        <form method="POST" class="auth-form" id="registerForm">
             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
             <label>Username</label>
             <input type="text" name="username" required placeholder="Choose a username">
@@ -79,8 +79,16 @@ include 'header.php';
             <input type="email" name="email" required placeholder="Enter your email">
             <label>Phone (optional)</label>
             <input type="tel" name="phone" placeholder="Enter phone number">
+            
             <label>Password</label>
-            <input type="password" name="password" required placeholder="Min. 8 chars, upper, lower, number">
+            <input type="password" name="password" id="password" required placeholder="Min. 8 chars, upper, lower, number">
+            <div class="password-strength-container">
+                <div class="password-strength-bar">
+                    <div id="password-strength"></div>
+                </div>
+                <span class="password-strength-label">Password strength</span>
+            </div>
+            
             <label>Confirm Password</label>
             <input type="password" name="confirm_password" required placeholder="Confirm password">
             <button type="submit" class="btn btn-primary">Register</button>

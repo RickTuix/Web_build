@@ -30,9 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $login = trim($_POST['username']); // can be username or email
     $password = $_POST['password'];
 
-    // Brute‑force protection
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM login_attempts WHERE (username = ? OR email = ?) AND attempted_at > (NOW() - INTERVAL 900 SECOND)");
-    $stmt->execute([$login, $login]);
+    // Brute‑force protection (fix: only use username column)
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM login_attempts WHERE username = ? AND attempted_at > (NOW() - INTERVAL 900 SECOND)");
+    $stmt->execute([$login]);
     if ($stmt->fetchColumn() >= 5) {
         $error = "Too many failed attempts. Try again in 15 minutes.";
     } else {
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['role'] = $user['role'];
             // Clear attempts
-            $pdo->prepare("DELETE FROM login_attempts WHERE username = ? OR email = ?")->execute([$login, $login]);
+            $pdo->prepare("DELETE FROM login_attempts WHERE username = ?")->execute([$login]);
             header("Location: index.php");
             exit;
         } else {
@@ -63,7 +63,7 @@ $pageTitle = "Sign In - Taan Tech";
 include 'header.php';
 ?>
 
-<!-- Login Section with same background as hero -->
+<!-- Login Section -->
 <section class="auth-section">
     <div class="auth-card">
         <h2>Sign In</h2>

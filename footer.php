@@ -58,6 +58,7 @@
       </div>
     </div>
   </footer>
+  <script src="/WEBBUILD/validation.js"></script>
 
 </body>
 </html>
