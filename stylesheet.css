@@ -391,8 +391,8 @@ header {
     border-radius: 20px;
     overflow: hidden;
     background-color: #3aafa9;
-    width: 300px;           /* adjust as needed */
-    aspect-ratio: 3 / 4;    /* portrait ratio */
+    width: 300px;
+    aspect-ratio: 3 / 4;
     flex-shrink: 0;
 }
 
@@ -425,7 +425,7 @@ header {
 /* Call to Action Banner */
 .cta-banner {
   background-image:linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('Images/Banners/pc3.avif');
-  background-size: contain; 
+  background-size: contain;
   background-color: #e9ecef;
   padding: 3rem;
   border-radius: 8px;
@@ -1010,7 +1010,7 @@ footer {
     padding: 0.4rem 0.8rem;
 }
 
-/* Order Details Page */
+/* Order Details Page (this block is for the .order-details class used in order_confirmation and order_details pages) */
 .order-details {
     background: #fff;
     padding: 1.5rem;
@@ -1030,6 +1030,7 @@ footer {
     border-bottom: 1px solid #eee;
     padding-bottom: 0.5rem;
 }
+
 /* Admin Panel */
 .admin-stats {
     display: grid;
@@ -1145,6 +1146,7 @@ footer {
 .btn-danger:hover {
     background-color: #c82333;
 }
+
 /* Client-side validation errors */
 .client-error {
     background-color: #fff3cd;
@@ -1178,4 +1180,55 @@ footer {
     font-size: 0.8rem;
     color: #666;
     margin-top: 0.25rem;
+}
+
+/* Order Details (User & Admin) - consolidated */
+.info-card,
+.admin-info-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.info-card h2,
+.admin-info-card h2 {
+    margin-bottom: 1rem;
+    color: #2B3C49;
+}
+
+.info-row {
+    margin-bottom: 0.75rem;
+    color: #333;
+}
+
+.info-row strong {
+    color: #2B3C49;
+}
+
+.order-items-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.order-items-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.order-items-list li:last-child {
+    border-bottom: none;
+}
+
+.order-items-list span:first-child {
+    color: #333;
+}
+
+.order-items-list span:last-child {
+    color: #1a73e8;
+    font-weight: 600;
 }
