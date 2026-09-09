@@ -9,16 +9,15 @@ session_set_cookie_params([
 ]);
 session_start();
 
-require_once 'db.php';
+require_once '../db.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../auth/login.php");
     exit;
 }
 
 $user_id = $_SESSION['user_id'];
 
-// Handle remove from cart (if clicked)
 if (isset($_GET['remove'])) {
     $cart_id = (int)$_GET['remove'];
     $stmt = $pdo->prepare("DELETE FROM cart WHERE id = ? AND user_id = ?");
@@ -27,7 +26,6 @@ if (isset($_GET['remove'])) {
     exit;
 }
 
-// Fetch cart items with product details
 $stmt = $pdo->prepare("
     SELECT c.id AS cart_id, c.quantity, p.id AS product_id, p.name, p.price, p.stock, 
            COALESCE((SELECT url FROM images WHERE product_id = p.id AND is_primary = 1 LIMIT 1), '') AS image_url
@@ -38,14 +36,13 @@ $stmt = $pdo->prepare("
 $stmt->execute([$user_id]);
 $cart_items = $stmt->fetchAll();
 
-// Calculate total
 $total = 0;
 foreach ($cart_items as $item) {
     $total += $item['price'] * $item['quantity'];
 }
 
 $pageTitle = "Your Cart - Taan Tech";
-include 'header.php';
+include '../header.php';
 ?>
 
 <div class="container">
@@ -72,29 +69,29 @@ include 'header.php';
                         <p>Price: $<?php echo number_format($item['price'], 2); ?></p>
                         <p>Quantity: <?php echo (int)$item['quantity']; ?></p>
                         <p>Subtotal: $<?php echo number_format($item['price'] * $item['quantity'], 2); ?></p>
-                        <a href="cart.php?remove=<?php echo $item['cart_id']; ?>" class="btn btn-danger">Remove</a>
+                        <a href="<?php echo $base_url; ?>/checkout/cart.php?remove=<?php echo $item['cart_id']; ?>" class="btn btn-danger">Remove</a>
                     </div>
                 </div>
             <?php endforeach; ?>
         </div>
         <div class="cart-total">
             <h3>Total: $<?php echo number_format($total, 2); ?></h3>
-            <a href="checkout.php" class="btn btn-primary">Proceed to Checkout</a>
+            <a href="<?php echo $base_url; ?>/checkout/checkout.php" class="btn btn-primary">Proceed to Checkout</a>
         </div>
     <?php else: ?>
-    <div class="cart-empty">
-        <div class="cart-empty-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#1a73e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="9" cy="21" r="1"></circle>
-                <circle cx="20" cy="21" r="1"></circle>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-            </svg>
+        <div class="cart-empty">
+            <div class="cart-empty-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#1a73e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+            </div>
+            <h2>Your cart is empty</h2>
+            <p>Looks like you haven't added anything yet. Let's fix that!</p>
+            <a href="<?php echo $base_url; ?>/products.php" class="btn btn-primary">Continue Shopping</a>
         </div>
-        <h2>Your cart is empty</h2>
-        <p>Looks like you haven't added anything yet. Let's fix that!</p>
-        <a href="products.php" class="btn btn-primary">Continue Shopping</a>
-    </div>
-<?php endif; ?>
+    <?php endif; ?>
 </div>
 
-<?php include 'footer.php'; ?>
+<?php include '../footer.php'; ?>

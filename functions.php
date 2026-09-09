@@ -78,4 +78,5 @@ function get_orders_count($pdo) {
     $stmt->execute([get_user_id()]);
     return (int)$stmt->fetchColumn();
 }
+
 ?>

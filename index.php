@@ -1,4 +1,7 @@
 <?php
+// Include database connection & define $base_url
+require_once 'db.php';
+
 // Page Configuration
 $pageTitle = "Taan Tech - Home";
 

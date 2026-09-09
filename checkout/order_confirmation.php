@@ -9,32 +9,30 @@ session_set_cookie_params([
 ]);
 session_start();
 
-require_once 'db.php';
+require_once '../db.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../auth/login.php");
     exit;
 }
 
 $order_id = isset($_GET['order_id']) ? (int)$_GET['order_id'] : 0;
 
-// Fetch order details (only if it belongs to the logged user)
 $stmt = $pdo->prepare("SELECT * FROM orders WHERE id = ? AND user_id = ?");
 $stmt->execute([$order_id, $_SESSION['user_id']]);
 $order = $stmt->fetch();
 
 if (!$order) {
-    header("Location: index.php");
+    header("Location: ../index.php");
     exit;
 }
 
-// Fetch order items
 $stmt = $pdo->prepare("SELECT oi.*, p.name FROM order_items oi JOIN products p ON oi.product_id = p.id WHERE oi.order_id = ?");
 $stmt->execute([$order_id]);
 $order_items = $stmt->fetchAll();
 
 $pageTitle = "Order Confirmation - Taan Tech";
-include 'header.php';
+include '../header.php';
 ?>
 
 <div class="container">
@@ -56,7 +54,7 @@ include 'header.php';
         </ul>
     </div>
 
-    <a href="products.php" class="btn btn-primary">Continue Shopping</a>
+    <a href="<?php echo $base_url; ?>/products.php" class="btn btn-primary">Continue Shopping</a>
 </div>
 
-<?php include 'footer.php'; ?>
+<?php include '../footer.php'; ?>

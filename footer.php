@@ -29,7 +29,7 @@
         <div class="footer-col">
           <h4>Customer Support</h4>
           <ul>
-            <li><a href="#">My Account</a></li>
+            <li><a href="<?php echo $base_url; ?>/account/account.php">My Account</a></li>
             <li><a href="#">FAQ</a></li>
             <li><a href="#">Terms & Conditions</a></li>
             <li><a href="#">Contact Us</a></li>

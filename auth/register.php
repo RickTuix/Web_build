@@ -1,5 +1,4 @@
 <?php
-// Start session with secure cookie settings FIRST
 session_set_cookie_params([
     'lifetime' => 0,
     'path' => '/',
@@ -10,18 +9,14 @@ session_set_cookie_params([
 ]);
 session_start();
 
-// Include database connection
-require_once 'db.php';
+require_once '../db.php';
 
-// Initialize error variable
 $error = '';
 
-// CSRF token generation (if not already set)
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-// Handle registration form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
         die("Invalid CSRF token.");
@@ -33,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $confirm = $_POST['confirm_password'];
 
-    // Validate email
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Invalid email format.";
     } elseif (strlen($password) < 8 || !preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !preg_match('/[0-9]/', $password)) {
@@ -41,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($password !== $confirm) {
         $error = "Passwords do not match.";
     } else {
-        // Check if username or email exists
         $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
         $stmt->execute([$username, $email]);
         if ($stmt->fetch()) {
@@ -50,21 +43,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $stmt = $pdo->prepare("INSERT INTO users (username, email, phone, password) VALUES (?, ?, ?, ?)");
             $stmt->execute([$username, $email, $phone, $hash]);
-            // Auto login
             $_SESSION['user_id'] = $pdo->lastInsertId();
             $_SESSION['role'] = 'user';
-            header("Location: index.php");
+            header("Location: ../index.php");
             exit;
         }
     }
 }
 
-// Set page title
 $pageTitle = "Sign Up - Taan Tech";
-include 'header.php';
+include '../header.php';
 ?>
 
-<!-- Registration Section with same background as hero -->
 <section class="auth-section">
     <div class="auth-card">
         <h2>Create Account</h2>
@@ -93,8 +83,8 @@ include 'header.php';
             <input type="password" name="confirm_password" required placeholder="Confirm password">
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
-        <p class="auth-footer">Already have an account? <a href="login.php">Sign In</a></p>
+        <p class="auth-footer">Already have an account? <a href="<?php echo $base_url; ?>/auth/login.php">Sign In</a></p>
     </div>
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include '../footer.php'; ?>

@@ -1,5 +1,4 @@
 <?php
-// Start session with secure cookie settings FIRST
 session_set_cookie_params([
     'lifetime' => 0,
     'path' => '/',
@@ -10,27 +9,22 @@ session_set_cookie_params([
 ]);
 session_start();
 
-// Include database connection
-require_once 'db.php';
+require_once '../db.php';
 
-// Initialize error variable
 $error = '';
 
-// CSRF token generation (if not already set)
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-// Handle login form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
         die("Invalid CSRF token.");
     }
 
-    $login = trim($_POST['username']); // can be username or email
+    $login = trim($_POST['username']);
     $password = $_POST['password'];
 
-    // Brute‑force protection (fix: only use username column)
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM login_attempts WHERE username = ? AND attempted_at > (NOW() - INTERVAL 900 SECOND)");
     $stmt->execute([$login]);
     if ($stmt->fetchColumn() >= 5) {
@@ -41,16 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt->fetch();
 
         if ($user && password_verify($password, $user['password'])) {
-            // Successful login
             session_regenerate_id(true);
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['role'] = $user['role'];
-            // Clear attempts
             $pdo->prepare("DELETE FROM login_attempts WHERE username = ?")->execute([$login]);
-            header("Location: index.php");
+            header("Location: ../index.php");
             exit;
         } else {
-            // Record failed attempt
             $pdo->prepare("INSERT INTO login_attempts (username, ip_address) VALUES (?, ?)")
                 ->execute([$login, $_SERVER['REMOTE_ADDR']]);
             $error = "Invalid credentials.";
@@ -58,12 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Set page title
 $pageTitle = "Sign In - Taan Tech";
-include 'header.php';
+include '../header.php';
 ?>
 
-<!-- Login Section -->
 <section class="auth-section">
     <div class="auth-card">
         <h2>Sign In</h2>
@@ -80,11 +69,11 @@ include 'header.php';
         </form>
         <div class="google-login">
             <button class="btn btn-google" onclick="alert('Google login coming soon!')">
-                <img src="Images/google-icon.png" alt="Google" style="width:20px; vertical-align:middle;"> Sign in with Google
+                <img src="<?php echo $base_url; ?>/Images/google-icon.png" alt="Google" style="width:20px; vertical-align:middle;"> Sign in with Google
             </button>
         </div>
-        <p class="auth-footer">Don't have an account? <a href="register.php">Sign Up</a></p>
+        <p class="auth-footer">Don't have an account? <a href="<?php echo $base_url; ?>/auth/register.php">Sign Up</a></p>
     </div>
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include '../footer.php'; ?>

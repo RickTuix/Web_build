@@ -1,5 +1,7 @@
 <?php
-// Start session with secure cookie settings FIRST (if not already started)
+/** @var string $base_url This is defined in db.php */
+// ... rest of code
+// Start session (if not already started)
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
         'lifetime' => 0,
@@ -17,12 +19,7 @@ if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-// Determine base URL for links (works from both root and admin subfolder)
-$script_name = $_SERVER['SCRIPT_NAME'];
-$base_url = rtrim(dirname($script_name), '/');
-if (basename(dirname($script_name)) === 'admin') {
-    $base_url = dirname($base_url);
-}
+// Note: $base_url is now defined in db.php (included before header.php)
 ?>
 
 <!DOCTYPE html>
@@ -36,24 +33,22 @@ if (basename(dirname($script_name)) === 'admin') {
 </head>
 <body>
 
-  <!-- Header -->
   <header>
     <div class="container navbar">
       <a href="<?php echo $base_url; ?>/index.php" class="logo">TAAN TECH</a>
       
-      <!-- Right side: navigation links + auth buttons -->
       <div class="nav-right">
         <ul class="nav-links">
           <li><a href="<?php echo $base_url; ?>/index.php">Home</a></li>
           <li><a href="<?php echo $base_url; ?>/products.php">Shop</a></li>
           <li><a href="#">Guides</a></li>
           <?php if (isset($_SESSION['user_id'])): ?>
-            <li><a href="<?php echo $base_url; ?>/cart.php">My Cart</a></li>
+            <li><a href="<?php echo $base_url; ?>/checkout/cart.php">My Cart</a></li>
           <?php else: ?>
             <li><a href="#">About Us</a></li>
           <?php endif; ?>
           <?php if (isset($_SESSION['user_id'])): ?>
-            <li><a href="<?php echo $base_url; ?>/account.php">My Account</a></li>
+            <li><a href="<?php echo $base_url; ?>/account/account.php">My Account</a></li>
                 <?php if ($_SESSION['role'] === 'admin'): ?>
             <li><a href="<?php echo $base_url; ?>/admin/index.php">Admin</a></li>
           <?php endif; ?>
@@ -62,12 +57,10 @@ if (basename(dirname($script_name)) === 'admin') {
         
         <div class="header-actions">
           <?php if (isset($_SESSION['user_id'])): ?>
-            <!-- Logged in: show Logout -->
-            <a href="<?php echo $base_url; ?>/logout.php" class="btn btn-secondary">Logout</a>
+            <a href="<?php echo $base_url; ?>/auth/logout.php" class="btn btn-secondary">Logout</a>
           <?php else: ?>
-            <!-- Not logged in: show Sign In and Sign Up links -->
-            <a href="<?php echo $base_url; ?>/login.php" class="btn btn-secondary">Sign In</a>
-            <a href="<?php echo $base_url; ?>/register.php" class="btn btn-primary">Sign Up</a>
+            <a href="<?php echo $base_url; ?>/auth/login.php" class="btn btn-secondary">Sign In</a>
+            <a href="<?php echo $base_url; ?>/auth/register.php" class="btn btn-primary">Sign Up</a>
           <?php endif; ?>
         </div>
       </div>

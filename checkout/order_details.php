@@ -9,44 +9,35 @@ session_set_cookie_params([
 ]);
 session_start();
 
-require_once 'db.php';
+require_once '../db.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../auth/login.php");
     exit;
 }
 
 $order_id = isset($_GET['order_id']) ? (int)$_GET['order_id'] : 0;
 
-// Fetch order (only if it belongs to the logged user)
 $stmt = $pdo->prepare("SELECT * FROM orders WHERE id = ? AND user_id = ?");
 $stmt->execute([$order_id, $_SESSION['user_id']]);
 $order = $stmt->fetch();
 
 if (!$order) {
-    header("Location: account.php");
+    header("Location: ../account/account.php");
     exit;
 }
 
-// Fetch order items with product images
-$stmt = $pdo->prepare("
-    SELECT oi.*, p.name, 
-           COALESCE((SELECT url FROM images WHERE product_id = p.id AND is_primary = 1 LIMIT 1), '') AS image_url
-    FROM order_items oi 
-    JOIN products p ON oi.product_id = p.id 
-    WHERE oi.order_id = ?
-");
+$stmt = $pdo->prepare("SELECT oi.*, p.name, COALESCE((SELECT url FROM images WHERE product_id = p.id AND is_primary = 1 LIMIT 1), '') AS image_url FROM order_items oi JOIN products p ON oi.product_id = p.id WHERE oi.order_id = ?");
 $stmt->execute([$order_id]);
 $order_items = $stmt->fetchAll();
 
 $pageTitle = "Order #" . $order_id . " - Taan Tech";
-include 'header.php';
+include '../header.php';
 ?>
 
 <div class="container">
     <h1 class="section-title">Order #<?php echo $order['id']; ?></h1>
 
-    <!-- Order info card -->
     <div class="info-card">
         <div class="info-row">
             <strong>Date:</strong> <?php echo date('F j, Y', strtotime($order['created_at'])); ?>
@@ -59,7 +50,6 @@ include 'header.php';
         </div>
     </div>
 
-    <!-- Items card -->
     <div class="info-card">
         <h2>Items</h2>
         <ul class="order-items-list">
@@ -79,7 +69,7 @@ include 'header.php';
         </ul>
     </div>
 
-    <a href="account.php" class="btn btn-secondary">Back to Account</a>
+    <a href="<?php echo $base_url; ?>/account/account.php" class="btn btn-secondary">Back to Account</a>
 </div>
 
-<?php include 'footer.php'; ?>
+<?php include '../footer.php'; ?>
