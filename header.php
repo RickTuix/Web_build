@@ -39,7 +39,7 @@ if (basename(dirname($script_name)) === 'admin') {
   <!-- Header -->
   <header>
     <div class="container navbar">
-      <div class="logo">TAAN TECH</div>
+      <a href="<?php echo $base_url; ?>/index.php" class="logo">TAAN TECH</a>
       
       <!-- Right side: navigation links + auth buttons -->
       <div class="nav-right">

@@ -94,6 +94,11 @@ header {
   font-weight: 800;
   font-size: 1.25rem;
   letter-spacing: 1px;
+  text-decoration: none;  /* remove underline */
+}
+
+.logo:hover {
+  color: #1a73e8;  /* optional hover color */
 }
 
 .nav-right {
