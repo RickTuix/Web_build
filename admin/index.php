@@ -88,6 +88,8 @@ include '../header.php';
         <a href="orders.php" class="btn btn-primary">View Orders</a>
         <a href="carts.php" class="btn btn-primary">Pending Carts</a>
         <a href="users.php" class="btn btn-primary">Manage Users</a>
+        <a href="services.php" class="btn btn-primary">Manage Services</a>
+        <a href="bookings.php" class="btn btn-primary">Service Bookings</a>
     </div>
 
     <!-- Top products -->

@@ -1443,3 +1443,54 @@ footer {
 html {
     scroll-behavior: smooth;
 }
+
+/* Booking page */
+.booking-layout {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.booking-info-card,
+.booking-form-card {
+    flex: 1;
+    min-width: 300px;
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.booking-info-card h2,
+.booking-form-card h2 {
+    margin-bottom: 1rem;
+    color: #2B3C49;
+}
+
+.booking-form-card textarea {
+    padding: 0.6rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.booking-form-card select {
+    padding: 0.6rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    background: #fff;
+    color: #333;
+}
+
+.admin-form select {
+    padding: 0.6rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    background: #fff;
+    color: #333;
+}

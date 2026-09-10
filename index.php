@@ -6,23 +6,9 @@ require_once 'db.php';
 $pageTitle = "Taan Tech - Home";
 
 // Optional dynamic content array for Services
-$services = [
-    [
-        "title" => "PC Building Service",
-        "description" => "Have one of our staff build your PC with custom parts.",
-        "image" => "Images/services/PCbuild.jpg"
-    ],
-    [
-        "title" => "Device Repair Service",
-        "description" => "Replacement and Repair",
-        "image" => "Images/services/Repair.png"
-    ],
-    [
-        "title" => "BIOS & Device Maintenance",
-        "description" => "Updating BIOS, Drivers and checking for Malware.",
-        "image" => "Images/services/bios.jpg"
-    ]
-];
+// Fetch active services from the database
+$servicesStmt = $pdo->query("SELECT * FROM services WHERE is_active = 1 ORDER BY id ASC");
+$services = $servicesStmt->fetchAll();
 
 // Optional dynamic content array for Testimonials
 $testimonials = [
@@ -76,7 +62,7 @@ include 'header.php';
       <div class="hero-content">
         <h1 class="hero-title">Trusted and reliable source of gadgets and tech accessories</h1>
         <div class="hero-actions">
-          <a href="#" class="btn btn-primary">Shop Now</a>
+          <a href="<?php echo $base_url; ?>/products.php" class="btn btn-primary">Shop Now</a>
         </div>
       </div>
     </div>
@@ -84,20 +70,27 @@ include 'header.php';
 
   <div class="container">
     
-    <!-- Featured Services Section -->
-    <h2 class="section-title">Featured Services</h2>
-    <div class="grid-3">
-      <?php foreach ($services as $service): ?>
-  <div class="card">
-    <div>
-      <img src="<?php echo htmlspecialchars($service['image']); ?>" alt="<?php echo htmlspecialchars($service['title']); ?>" class="card-icon">
-      <h3 class="card-title"><?php echo htmlspecialchars($service['title']); ?></h3>
-      <p class="card-text"><?php echo htmlspecialchars($service['description']); ?></p>
-    </div>
-    <a href="#" class="btn btn-dark">Book Service</a>
-  </div>
-<?php endforeach; ?>
-    </div>
+  <!-- Featured Services Section -->
+<h2 class="section-title" id="services">Featured Services</h2>
+<div class="grid-3">
+    <?php foreach ($services as $service): ?>
+        <div class="card">
+            <div>
+                <?php if (!empty($service['image'])): ?>
+                    <img src="<?php echo $base_url . '/' . htmlspecialchars($service['image']); ?>"
+                        alt="<?php echo htmlspecialchars($service['name']); ?>"
+                        class="card-icon">
+                <?php endif; ?>
+                <h3 class="card-title"><?php echo htmlspecialchars($service['name']); ?></h3>
+                <p class="card-text"><?php echo htmlspecialchars($service['description']); ?></p>
+                <p class="card-text" style="color:#4aa8ff; font-weight:600;">
+                    $<?php echo number_format($service['price'], 2); ?> · <?php echo htmlspecialchars($service['duration']); ?>
+                </p>
+            </div>
+            <a href="<?php echo $base_url; ?>/book_service.php?id=<?php echo $service['id']; ?>" class="btn btn-dark">Book Service</a>
+        </div>
+    <?php endforeach; ?>
+</div>
 
     <!-- Featured Promo Banner -->
     <div class="promo-banner">

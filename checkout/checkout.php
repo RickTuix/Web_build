@@ -65,8 +65,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stock_ok) {
             $pdo->beginTransaction();
             try {
-                $stmt = $pdo->prepare("INSERT INTO orders (user_id, total_amount, status) VALUES (?, ?, 'completed')");
-                $stmt->execute([$user_id, $total]);
+                $stmt = $pdo->prepare("
+                INSERT INTO orders 
+                (user_id, full_name, address, city, zip, country, total_amount, status) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, 'completed')
+            ");
+            $stmt->execute([
+                $user_id,
+                $full_name,
+                $address,
+                $city,
+                $zip,
+                $country,
+                $total
+                ]);
                 $order_id = $pdo->lastInsertId();
 
                 $stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_id, quantity, price_at_time) VALUES (?, ?, ?, ?)");

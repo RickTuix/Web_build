@@ -9,7 +9,7 @@ session_set_cookie_params([
 ]);
 session_start();
 
-require_once '../db.php';
+require_once dirname(__DIR__) . '/db.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../auth/login.php");
@@ -143,6 +143,34 @@ include '../header.php';
             <p>You have no orders yet. <a href="<?php echo $base_url; ?>/products.php">Start shopping</a></p>
         <?php endif; ?>
     </div>
+            <!-- Service Bookings -->
+        <?php
+        $stmt = $pdo->prepare("
+            SELECT b.*, s.name AS service_name, s.price 
+            FROM bookings b 
+            JOIN services s ON b.service_id = s.id 
+            WHERE b.user_id = ? 
+            ORDER BY b.booking_date DESC
+        ");
+        $stmt->execute([$user_id]);
+        $bookings = $stmt->fetchAll();
+        ?>
+        <div class="order-history" style="margin-top:2rem;">
+            <h2>Service Bookings</h2>
+            <?php if (count($bookings) > 0): ?>
+                <?php foreach ($bookings as $b): ?>
+                    <div class="order-card">
+                        <div class="order-header">
+                            <span><strong><?php echo htmlspecialchars($b['service_name']); ?></strong></span>
+                            <span><?php echo date('F j, Y', strtotime($b['booking_date'])); ?> at <?php echo htmlspecialchars($b['booking_time']); ?></span>
+                            <span>Status: <?php echo ucfirst($b['status']); ?></span>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>You have no bookings yet. <a href="<?php echo $base_url; ?>/index.php#services">Browse services</a></p>
+            <?php endif; ?>
+        </div>
 </div>
 
 <?php include '../footer.php'; ?>

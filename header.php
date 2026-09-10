@@ -41,7 +41,7 @@ if (empty($_SESSION['csrf_token'])) {
         <ul class="nav-links">
           <li><a href="<?php echo $base_url; ?>/index.php">Home</a></li>
           <li><a href="<?php echo $base_url; ?>/products.php">Shop</a></li>
-          <li><a href="<?php echo $base_url; ?>/services.php">Services</a></li>
+          <li><a href="<?php echo $base_url; ?>/index.php#services">Services</a></li>
           <?php if (isset($_SESSION['user_id'])): ?>
             <li><a href="<?php echo $base_url; ?>/checkout/cart.php">My Cart</a></li>
           <?php else: ?>
