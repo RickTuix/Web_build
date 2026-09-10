@@ -9,7 +9,17 @@ session_set_cookie_params([
 ]);
 session_start();
 
-require_once '../db.php';
+// Include database connection (defines $pdo and $base_url)
+require_once dirname(__DIR__) . '/db.php';
+
+// Safety fallback: if $base_url wasn't set for any reason, compute it here
+if (!isset($base_url)) {
+    $script_name = $_SERVER['SCRIPT_NAME'];
+    $base_url = rtrim(dirname($script_name), '/');
+    if (basename(dirname($script_name)) === 'auth') {
+        $base_url = dirname($base_url);
+    }
+}
 
 $error = '';
 
@@ -35,19 +45,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt->fetch();
 
         if ($user && password_verify($password, $user['password'])) {
-    session_regenerate_id(true);
-    $_SESSION['user_id'] = $user['id'];
-    $_SESSION['role'] = $user['role'];
-    $pdo->prepare("DELETE FROM login_attempts WHERE username = ?")->execute([$login]);
+            session_regenerate_id(true);
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['role'] = $user['role'];
+            $pdo->prepare("DELETE FROM login_attempts WHERE username = ?")->execute([$login]);
 
-    // Redirect admins to the admin dashboard, everyone else to the homepage
-        if ($user['role'] === 'admin') {
-            header("Location: ../admin/index.php");
+            if ($user['role'] === 'admin') {
+                header("Location: " . $base_url . "/admin/index.php");
             } else {
-                header("Location: ../index.php");
-                }
+                header("Location: " . $base_url . "/index.php");
+            }
             exit;
-            } else {
+        } else {
             $pdo->prepare("INSERT INTO login_attempts (username, ip_address) VALUES (?, ?)")
                 ->execute([$login, $_SERVER['REMOTE_ADDR']]);
             $error = "Invalid credentials.";
@@ -56,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $pageTitle = "Sign In - Taan Tech";
-include '../header.php';
+include dirname(__DIR__) . '/header.php';
 ?>
 
 <section class="auth-section">
@@ -82,4 +91,4 @@ include '../header.php';
     </div>
 </section>
 
-<?php include '../footer.php'; ?>
+<?php include dirname(__DIR__) . '/footer.php'; ?>
