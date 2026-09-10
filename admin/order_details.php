@@ -81,6 +81,25 @@ include '../header.php';
             <strong>Total:</strong> $<?php echo number_format($order['total_amount'], 2); ?>
         </div>
     </div>
+    <!-- Shipping Information card -->
+<div class="info-card">
+    <h2>Shipping Information</h2>
+    <div class="info-row">
+        <strong>Full Name:</strong> <?php echo htmlspecialchars($order['full_name'] ?? '—'); ?>
+    </div>
+    <div class="info-row">
+        <strong>Address:</strong> <?php echo htmlspecialchars($order['address'] ?? '—'); ?>
+    </div>
+    <div class="info-row">
+        <strong>City:</strong> <?php echo htmlspecialchars($order['city'] ?? '—'); ?>
+    </div>
+    <div class="info-row">
+        <strong>ZIP Code:</strong> <?php echo htmlspecialchars($order['zip'] ?? '—'); ?>
+    </div>
+    <div class="info-row">
+        <strong>Country:</strong> <?php echo htmlspecialchars($order['country'] ?? '—'); ?>
+    </div>
+</div>
 
     <!-- Update Status form -->
     <div class="info-card">

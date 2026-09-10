@@ -35,13 +35,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt->fetch();
 
         if ($user && password_verify($password, $user['password'])) {
-            session_regenerate_id(true);
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['role'] = $user['role'];
-            $pdo->prepare("DELETE FROM login_attempts WHERE username = ?")->execute([$login]);
-            header("Location: ../index.php");
+    session_regenerate_id(true);
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['role'] = $user['role'];
+    $pdo->prepare("DELETE FROM login_attempts WHERE username = ?")->execute([$login]);
+
+    // Redirect admins to the admin dashboard, everyone else to the homepage
+        if ($user['role'] === 'admin') {
+            header("Location: ../admin/index.php");
+            } else {
+                header("Location: ../index.php");
+                }
             exit;
-        } else {
+            } else {
             $pdo->prepare("INSERT INTO login_attempts (username, ip_address) VALUES (?, ?)")
                 ->execute([$login, $_SERVER['REMOTE_ADDR']]);
             $error = "Invalid credentials.";
