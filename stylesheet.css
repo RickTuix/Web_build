@@ -384,51 +384,151 @@ header {
 }
 
 /* Homepage Popular Product */
-.popular-product-wrapper {
+
+/* Most Popular Products Section */
+.popular-section-wrapper {
     display: flex;
-    align-items: center;
     gap: 2rem;
     margin-bottom: 3rem;
+    align-items: stretch;
+    flex-wrap: wrap;
 }
 
-.popular-product-box {
-    border: 4px solid #3aafa9;
-    border-radius: 20px;
+.popular-products-grid {
+    flex: 1;
+    min-width: 320px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+}
+
+.popular-product-card {
+    background: #ffffff;
+    border-radius: 10px;
     overflow: hidden;
-    background-color: #3aafa9;
-    width: 300px;
-    aspect-ratio: 3 / 4;
-    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.popular-product-img {
+.popular-product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.popular-card-image-link {
+    display: block;
+    width: 100%;
+    height: 140px;
+    background: #f0f0f0;
+    overflow: hidden;
+}
+
+.popular-card-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.3s;
 }
 
-.popular-product-info {
-    max-width: 400px;
-    text-align: left;
-    color: white;
+.popular-product-card:hover .popular-card-img {
+    transform: scale(1.05);
 }
 
-.popular-product-info h3 {
-    color: #4aa8ff;
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-    line-height: 1.4;
+.popular-card-body {
+    padding: 0.75rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
+
+.popular-card-title {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
+}
+
+.popular-card-title a {
+    color: #2B3C49;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.popular-card-title a:hover {
+    color: #1a73e8;
+}
+
+.popular-card-price {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #1a73e8;
+    margin-bottom: 0.25rem;
+}
+
+.popular-card-sold {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: auto;
+}
+
+/* Side "View More" panel */
+.popular-side-cta {
+    flex-shrink: 0;
+    width: 260px;
+    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+    border-radius: 10px;
+    padding: 2rem 1.5rem;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.popular-side-cta h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+}
+
+.popular-side-cta p {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    color: #e0e8f5;
+    line-height: 1.5;
+}
+
+.popular-side-cta .btn-primary {
+    background-color: #ffffff;
+    color: #1a73e8;
+    border: 1px solid #ffffff;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
+.popular-side-cta .btn-primary:hover {
+    background-color: #f0f4fb;
+    border-color: #f0f4fb;
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 768px) {
+    .popular-section-wrapper {
+        flex-direction: column;
+    }
+    .popular-side-cta {
+        width: 100%;
+    }
+}
+
 .popular-product-info h3 a:hover {
     text-decoration: underline;
 }
 
-.popular-product-info .product-subtitle {
-    color: white;
-    font-size: 1.1rem;
-    line-height: 1.4;
-}
+
 
 /* Call to Action Banner */
 .cta-banner {
@@ -1247,4 +1347,31 @@ footer {
     font-size: 1rem;
     background-color: #fff;
     color: #333;
+}
+/* Order item images (used in order details & pending carts) */
+.order-item-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+    background: #f0f0f0;
+}
+.order-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.order-item-details {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

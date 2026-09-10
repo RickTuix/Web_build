@@ -52,7 +52,7 @@ $testimonials = [
     ]
 ];
 
-// Fetch the best-selling product (by total quantity sold in completed orders)
+// Fetch the top 4 best-selling products
 $popularStmt = $pdo->query("
     SELECT p.id, p.name, p.description, p.price,
            SUM(oi.quantity) AS total_sold,
@@ -63,9 +63,9 @@ $popularStmt = $pdo->query("
     WHERE o.status = 'completed' AND p.is_active = 1
     GROUP BY p.id
     ORDER BY total_sold DESC
-    LIMIT 1
+    LIMIT 4
 ");
-$popularProduct = $popularStmt->fetch();
+$popularProducts = $popularStmt->fetchAll();
 
 include 'header.php';
 ?>
@@ -117,34 +117,43 @@ include 'header.php';
       </div>
     </div>
 
-<!-- Most Popular Product -->
-<?php if ($popularProduct): ?>
-    <h2 class="section-title">Most Popular Product</h2>
+<!-- Most Popular Products -->
+<?php if (count($popularProducts) > 0): ?>
+    <h2 class="section-title">Most Popular Products</h2>
 
-    <div class="popular-product-wrapper">
-        <div class="popular-product-box">
-            <?php if ($popularProduct['image_url']): ?>
-                <img src="<?php echo $base_url . '/' . htmlspecialchars($popularProduct['image_url']); ?>"
-                     alt="<?php echo htmlspecialchars($popularProduct['name']); ?>"
-                     class="popular-product-img">
-            <?php else: ?>
-                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iODAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGFsaWdubWVudC1iYXNlbGluZT0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiM2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=="
-                     alt="No image" class="popular-product-img">
-            <?php endif; ?>
+    <div class="popular-section-wrapper">
+        <!-- Product grid -->
+        <div class="popular-products-grid">
+            <?php foreach ($popularProducts as $product): ?>
+                <div class="popular-product-card">
+                    <a href="<?php echo $base_url; ?>/product.php?id=<?php echo $product['id']; ?>" class="popular-card-image-link">
+                        <?php if ($product['image_url']): ?>
+                            <img src="<?php echo $base_url . '/' . htmlspecialchars($product['image_url']); ?>"
+                                 alt="<?php echo htmlspecialchars($product['name']); ?>"
+                                 class="popular-card-img">
+                        <?php else: ?>
+                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGFsaWdubWVudC1iYXNlbGluZT0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=="
+                                 alt="No image" class="popular-card-img">
+                        <?php endif; ?>
+                    </a>
+                    <div class="popular-card-body">
+                        <h3 class="popular-card-title">
+                            <a href="<?php echo $base_url; ?>/product.php?id=<?php echo $product['id']; ?>">
+                                <?php echo htmlspecialchars($product['name']); ?>
+                            </a>
+                        </h3>
+                        <p class="popular-card-price">$<?php echo number_format($product['price'], 2); ?></p>
+                        <p class="popular-card-sold"><?php echo (int)$product['total_sold']; ?> sold</p>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         </div>
 
-        <div class="popular-product-info">
-            <h3>
-                <a href="<?php echo $base_url; ?>/product.php?id=<?php echo $popularProduct['id']; ?>" style="color:#4aa8ff; text-decoration:none;">
-                    <?php echo htmlspecialchars($popularProduct['name']); ?>
-                </a>
-            </h3>
-            <p class="product-subtitle">
-                <?php echo htmlspecialchars(mb_strimwidth($popularProduct['description'], 0, 100, '…')); ?>
-            </p>
-            <p class="product-subtitle" style="margin-top:0.5rem; font-weight:600;">
-                $<?php echo number_format($popularProduct['price'], 2); ?> &nbsp;·&nbsp; <?php echo (int)$popularProduct['total_sold']; ?> sold
-            </p>
+        <!-- Side CTA -->
+        <div class="popular-side-cta">
+            <h3>Want more?</h3>
+            <p>Browse our full catalog of tech gadgets and parts.</p>
+            <a href="<?php echo $base_url; ?>/products.php" class="btn btn-primary">View More</a>
         </div>
     </div>
 <?php endif; ?>

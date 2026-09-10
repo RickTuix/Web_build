@@ -9,10 +9,10 @@ session_set_cookie_params([
 ]);
 session_start();
 
-require_once '../db.php';
+require_once dirname(__DIR__) . '/db.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../auth/login.php");
+    header("Location: " . $base_url . "/auth/login.php");
     exit;
 }
 
@@ -22,7 +22,7 @@ if (isset($_GET['remove'])) {
     $cart_id = (int)$_GET['remove'];
     $stmt = $pdo->prepare("DELETE FROM cart WHERE id = ? AND user_id = ?");
     $stmt->execute([$cart_id, $user_id]);
-    header("Location: cart.php");
+    header("Location: " . $base_url . "/checkout/cart.php");
     exit;
 }
 
@@ -42,7 +42,7 @@ foreach ($cart_items as $item) {
 }
 
 $pageTitle = "Your Cart - Taan Tech";
-include '../header.php';
+include dirname(__DIR__) . '/header.php';
 ?>
 
 <div class="container">
@@ -59,8 +59,7 @@ include '../header.php';
                 <div class="cart-item">
                     <div class="cart-item-image">
                         <?php if ($item['image_url']): ?>
-                            <img src="<?php echo htmlspecialchars($item['image_url']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>">
-                        <?php else: ?>
+                            <img src="<?php echo $base_url . '/' . htmlspecialchars($item['image_url']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>">
                             <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGFsaWdubWVudC1iYXNlbGluZT0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg==" alt="No image">
                         <?php endif; ?>
                     </div>

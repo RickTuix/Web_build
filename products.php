@@ -101,7 +101,7 @@ include 'header.php';
 <div class="product-actions">
     <a href="product.php?id=<?php echo $product['id']; ?>" class="btn btn-secondary">View Details</a>
     <?php if ($product['stock'] > 0): ?>
-        <form method="POST" action="checkout/add_to_cart.php" class="add-to-cart-form">
+        <form method="POST" action="<?php echo $base_url; ?>/checkout/add_to_cart.php" class="add-to-cart-form">
             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
             <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
             <input type="hidden" name="quantity" value="1">
