@@ -41,11 +41,11 @@ if (empty($_SESSION['csrf_token'])) {
         <ul class="nav-links">
           <li><a href="<?php echo $base_url; ?>/index.php">Home</a></li>
           <li><a href="<?php echo $base_url; ?>/products.php">Shop</a></li>
-          <li><a href="#">Guides</a></li>
+          <li><a href="<?php echo $base_url; ?>/services.php">Services</a></li>
           <?php if (isset($_SESSION['user_id'])): ?>
             <li><a href="<?php echo $base_url; ?>/checkout/cart.php">My Cart</a></li>
           <?php else: ?>
-            <li><a href="#">About Us</a></li>
+            <li><a href="<?php echo $base_url; ?>/index.php#about">About Us</a></li>
           <?php endif; ?>
           <?php if (isset($_SESSION['user_id'])): ?>
             <li><a href="<?php echo $base_url; ?>/account/account.php">My Account</a></li>

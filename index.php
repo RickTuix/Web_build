@@ -158,13 +158,44 @@ include 'header.php';
     </div>
 <?php endif; ?>
 
-    <!-- CTA Section -->
-    <div class="cta-banner">
-      <h2>READY TO UPGRADE YOUR RIG?</h2>
-      <p>Schedule your service appointment or order premium genuine parts online in just a few clicks.</p>
-      <a href="#" class="btn btn-primary">Book Appointment</a>
-      <a href="#" class="btn btn-secondary cta-btn-secondary">Explore Parts</a>
+    <!-- About Us Section -->
+<section class="about-section" id="about">
+    <div class="about-content">
+        <h2 class="section-title">About Taan Tech</h2>
+        <p class="about-text">
+            Founded with a passion for technology, Taan Tech is your trusted source for
+            premium gadgets, genuine parts, and expert repair services. Whether you're building
+            your first PC, upgrading your setup, or looking for reliable maintenance, our team of
+            certified technicians is here to help.
+        </p>
+        <p class="about-text">
+            We believe in honest service, quality products, and giving every customer the
+            attention they deserve. That's why thousands of tech enthusiasts choose us for
+            their hardware needs.
+        </p>
+
+        <div class="about-highlights">
+            <div class="about-highlight">
+                <h3>✔ Genuine Parts</h3>
+                <p>Only authentic components from trusted brands.</p>
+            </div>
+            <div class="about-highlight">
+                <h3>✔ Expert Service</h3>
+                <p>Skilled technicians with years of experience.</p>
+            </div>
+            <div class="about-highlight">
+                <h3>✔ Fair Prices</h3>
+                <p>Competitive rates without compromising quality.</p>
+            </div>
+            <div class="about-highlight">
+                <h3>✔ Trusted Support</h3>
+                <p>Friendly help before and after your purchase.</p>
+            </div>
+        </div>
+
+        <a href="<?php echo $base_url; ?>/products.php" class="btn btn-primary">Explore Our Shop</a>
     </div>
+</section>
 
     <!-- Why Choose Us / Testimonials Section -->
     <div class="testimonials">
