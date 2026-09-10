@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stock_ok) {
             $pdo->beginTransaction();
             try {
-                $stmt = $pdo->prepare("INSERT INTO orders (user_id, total_amount, status) VALUES (?, ?, 'pending')");
+                $stmt = $pdo->prepare("INSERT INTO orders (user_id, total_amount, status) VALUES (?, ?, 'completed')");
                 $stmt->execute([$user_id, $total]);
                 $order_id = $pdo->lastInsertId();
 

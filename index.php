@@ -52,6 +52,21 @@ $testimonials = [
     ]
 ];
 
+// Fetch the best-selling product (by total quantity sold in completed orders)
+$popularStmt = $pdo->query("
+    SELECT p.id, p.name, p.description, p.price,
+           SUM(oi.quantity) AS total_sold,
+           COALESCE((SELECT url FROM images WHERE product_id = p.id AND is_primary = 1 LIMIT 1), '') AS image_url
+    FROM order_items oi
+    JOIN products p ON oi.product_id = p.id
+    JOIN orders o ON oi.order_id = o.id
+    WHERE o.status = 'completed' AND p.is_active = 1
+    GROUP BY p.id
+    ORDER BY total_sold DESC
+    LIMIT 1
+");
+$popularProduct = $popularStmt->fetch();
+
 include 'header.php';
 ?>
 
@@ -103,18 +118,36 @@ include 'header.php';
     </div>
 
 <!-- Most Popular Product -->
-<h2 class="section-title">Most Popular Product</h2>
+<?php if ($popularProduct): ?>
+    <h2 class="section-title">Most Popular Product</h2>
 
-<div class="popular-product-wrapper">
-    <div class="popular-product-box">
-        <img src="Images/Products/product1.jpg" alt="Sleek white headset and earpods set" class="popular-product-img">
-    </div>
+    <div class="popular-product-wrapper">
+        <div class="popular-product-box">
+            <?php if ($popularProduct['image_url']): ?>
+                <img src="<?php echo $base_url . '/' . htmlspecialchars($popularProduct['image_url']); ?>"
+                     alt="<?php echo htmlspecialchars($popularProduct['name']); ?>"
+                     class="popular-product-img">
+            <?php else: ?>
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MDAiIGhlaWdodD0iODAwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGFsaWdubWVudC1iYXNlbGluZT0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiM2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg=="
+                     alt="No image" class="popular-product-img">
+            <?php endif; ?>
+        </div>
 
-    <div class="popular-product-info">
-        <h3>Sleek white headset + earpods set</h3>
-        <p class="product-subtitle">WH-1000XM5 Industry Leading Noise-Cancelling Headphones</p>
+        <div class="popular-product-info">
+            <h3>
+                <a href="<?php echo $base_url; ?>/product.php?id=<?php echo $popularProduct['id']; ?>" style="color:#4aa8ff; text-decoration:none;">
+                    <?php echo htmlspecialchars($popularProduct['name']); ?>
+                </a>
+            </h3>
+            <p class="product-subtitle">
+                <?php echo htmlspecialchars(mb_strimwidth($popularProduct['description'], 0, 100, '…')); ?>
+            </p>
+            <p class="product-subtitle" style="margin-top:0.5rem; font-weight:600;">
+                $<?php echo number_format($popularProduct['price'], 2); ?> &nbsp;·&nbsp; <?php echo (int)$popularProduct['total_sold']; ?> sold
+            </p>
+        </div>
     </div>
-</div>
+<?php endif; ?>
 
     <!-- CTA Section -->
     <div class="cta-banner">

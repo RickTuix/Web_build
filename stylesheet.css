@@ -420,6 +420,9 @@ header {
     margin-bottom: 0.5rem;
     line-height: 1.4;
 }
+.popular-product-info h3 a:hover {
+    text-decoration: underline;
+}
 
 .popular-product-info .product-subtitle {
     color: white;
@@ -1236,4 +1239,12 @@ footer {
 .order-items-list span:last-child {
     color: #1a73e8;
     font-weight: 600;
+}
+.admin-form select {
+    padding: 0.6rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    background-color: #fff;
+    color: #333;
 }

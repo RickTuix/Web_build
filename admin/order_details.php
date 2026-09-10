@@ -13,13 +13,28 @@ require_once dirname(__DIR__) . '/db.php';
 
 // Admin check
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: login.php");
+    header("Location: ../auth/login.php");
     exit;
 }
 
 $order_id = isset($_GET['order_id']) ? (int)$_GET['order_id'] : 0;
 
-// Fetch order (any user)
+// Handle status update
+$message = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
+    if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
+        die("Invalid CSRF token.");
+    }
+    $new_status = $_POST['status'];
+    $allowed = ['completed', 'cancelled'];
+    if (in_array($new_status, $allowed)) {
+        $stmt = $pdo->prepare("UPDATE orders SET status = ? WHERE id = ?");
+        $stmt->execute([$new_status, $order_id]);
+        $message = "Order status updated to " . ucfirst($new_status) . ".";
+    }
+}
+
+// Fetch order
 $stmt = $pdo->prepare("SELECT o.*, u.username FROM orders o JOIN users u ON o.user_id = u.id WHERE o.id = ?");
 $stmt->execute([$order_id]);
 $order = $stmt->fetch();
@@ -47,6 +62,10 @@ include '../header.php';
 <div class="container">
     <h1 class="section-title">Order #<?php echo $order['id']; ?></h1>
 
+    <?php if ($message): ?>
+        <p class="success-message"><?php echo htmlspecialchars($message); ?></p>
+    <?php endif; ?>
+
     <!-- Order info card -->
     <div class="info-card">
         <div class="info-row">
@@ -63,6 +82,20 @@ include '../header.php';
         </div>
     </div>
 
+    <!-- Update Status form -->
+    <div class="info-card">
+        <h2>Update Status</h2>
+        <form method="POST" class="admin-form">
+            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+            <label>Order Status</label>
+            <select name="status">
+                <option value="completed" <?php echo $order['status'] === 'completed' ? 'selected' : ''; ?>>Completed</option>
+                <option value="cancelled" <?php echo $order['status'] === 'cancelled' ? 'selected' : ''; ?>>Cancelled</option>
+            </select>
+            <button type="submit" name="update_status" class="btn btn-primary">Update Status</button>
+        </form>
+    </div>
+
     <!-- Items card -->
     <div class="info-card">
         <h2>Items</h2>
@@ -70,7 +103,7 @@ include '../header.php';
             <?php foreach ($order_items as $item): ?>
                 <li class="order-item">
                     <?php if ($item['image_url']): ?>
-                        <img src="<?php echo htmlspecialchars($item['image_url']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>" class="order-item-img">
+                        <img src="<?php echo $base_url . '/' . htmlspecialchars($item['image_url']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>" class="order-item-img">
                     <?php else: ?>
                         <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MCIgaGVpZ2h0PSI4MCI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2VlZSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBhbGlnbm1lbnQtYmFzZWxpbmU9Im1pZGRsZSIgZm9udC1zaXplPSIxMCIgZmlsbD0iIzY2NiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Tm8gSW1nPC90ZXh0Pjwvc3ZnPg==" alt="No image" class="order-item-img">
                     <?php endif; ?>
